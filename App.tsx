@@ -6,11 +6,7 @@ import React from 'react';
 // Import your screens
 import Home from './components/Home';
 import Settings from './components/Settings';
-
-export type RootStackParamList = {
-  Home: undefined;
-  Settings: undefined;
-};
+import { RootStackParamList } from './router';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -21,9 +17,6 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName="Home"
-          screenOptions={{
-            headerShown: false,
-          }}
         >
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Settings" component={Settings} />
