@@ -1,13 +1,13 @@
 import Box from "@/components/Box";
 import { View } from "react-native";
 import styles from "../styles/styles";
-
+const boxes = new Array(2).fill(null).map((v, i) => i + 1);
 export default function Index() {
   return (
     <View style={styles.container}>
-      <Box>#1</Box>
-      <Box>#2</Box>
-      <Box>#3</Box>
+      {boxes.map((i) => (
+        <Box key={i}>#{i}</Box>
+      ))}
     </View>
   );
 }
