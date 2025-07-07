@@ -1,39 +1,39 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Platform, StatusBar, StyleSheet, Text, View } from "react-native";
 
 export default function Index() {
-  const name = "Best song ever";
   const styles = StyleSheet.create({
     container: {
-      margin: 10,
-      marginTop: 100,
-      backgroundColor: 'orange',
-      borderRadius: 5
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: 'ghostwhite',
+      ...Platform.select({
+        ios: {
+          paddingTop: 20, // iOS status bar height
+        },
+        android: {
+          paddingTop: StatusBar.currentHeight, // Android status bar height
+        },
+      }),
     },
-    innerContainer: {
-      backgroundColor: "brown",
-      height: 50,
-      width: 150,
-      borderTopLeftRadius: 5,
-      borderBottomLeftRadius: 5,
+    box: {
+      width: 100,
+      height: 100,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "lightgray",
     },
-    title: {
-      fontSize: 18,
-      fontWeight: '200',
-      color: 'white',
-      position: 'absolute',
-      top: 12,
-      left: 10,
-    },
-    subtitle: {
-      fontWeight: 'bold'
+    boxText: {
+      color: "darkslategray",
+      fontWeight: "bold",
     }
   });
+
   return (
     <View style={styles.container}>
-      <View style={styles.innerContainer} />
-      <Text style={styles.title}>
-        <Text style={styles.subtitle}>Playing: </Text>{name}
-      </Text>
+      <View style={styles.box}>
+        <Text style={styles.boxText}>I&apos;m in a box</Text>
+      </View>
     </View>
   );
 }
