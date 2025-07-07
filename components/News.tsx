@@ -2,13 +2,13 @@ import { RootStackParamList } from "@/router";
 import styles from "@/styles/styles";
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Text, View } from "react-native";
-type Props = NativeStackScreenProps<RootStackParamList, 'Settings'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'News'>;
 
-export default function Settings({ navigation  }: Props) {
+export default function News({ navigation }: Props) {
 
   return (
     <View style={styles.container}>
-      <Text>Settings Screen</Text>
+      <Text>News Screen</Text>
     </View>
   );
 }
