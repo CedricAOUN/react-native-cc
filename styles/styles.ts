@@ -4,7 +4,7 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexWrap: 'wrap',
     alignItems: 'center',
     backgroundColor: 'ghostwhite',
     ...Platform.select({
@@ -17,6 +17,7 @@ export default StyleSheet.create({
     }),
   },
   box: {
+    height: 100,
     width: 100,
     justifyContent: 'center',
     alignSelf: 'stretch',
@@ -25,6 +26,7 @@ export default StyleSheet.create({
     borderWidth: 1,
     borderStyle: 'dashed',
     borderColor: 'darkslategray',
+    margin: 10,
   },
   boxText: {
     color: 'darkslategray',
