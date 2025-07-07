@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 
 // Import your screens
+import { Button } from 'react-native';
 import Home from './components/Home';
 import Settings from './components/Settings';
 import { RootStackParamList } from './router';
@@ -19,7 +20,13 @@ export default function App() {
           initialRouteName="Home"
         >
           <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="Settings" component={Settings} />
+          <Stack.Screen 
+            name="Settings" 
+            component={Settings} 
+            options={({ route }) => ({ headerRight: () => 
+              <Button onPress={() => {}} title="Save Changes" disabled={route.params.username === 'John Doe'} /> 
+            })} 
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </>
