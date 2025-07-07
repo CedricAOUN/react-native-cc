@@ -1,15 +1,17 @@
-import { Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 
 export default function Index() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
-    </View>
+    <ScrollView contentInsetAdjustmentBehavior="automatic">
+      <View
+          style={{ 
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+        }}
+      >
+        <Text>Hello World from Cloud Campus student</Text>
+      </View>
+    </ScrollView>
   );
 }
