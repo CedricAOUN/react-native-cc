@@ -43,4 +43,16 @@ export default StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'stretch',
   },
+  listContainer: {
+    flex: 1,
+    paddingTop: 10,
+    flexDirection: 'column',
+  },
+  listItem: {
+    padding: 5,
+    margin: 5,
+    color: 'slategray',
+    backgroundColor: 'ghostwhite',
+    textAlign: 'center',
+  },
 });
