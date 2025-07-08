@@ -55,4 +55,16 @@ export default StyleSheet.create({
     backgroundColor: 'ghostwhite',
     textAlign: 'center',
   },
+  controls: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: 'white',
+  },
+  filter: {
+    height: 40,
+    width: 200,
+  },
 });
