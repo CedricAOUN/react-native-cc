@@ -1,4 +1,5 @@
 import { RootStackParamList } from "@/router";
+import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { Switch, SwitchProps, Text, TextInput, TextInputProps, View } from "react-native";
@@ -34,11 +35,35 @@ function CustomSwitch( props : CustomSwitchProps) {
   )
 }
 
+function DatePicker({ label, value, onChange} : { label: string, value: Date, onChange: (date: Date) => void }) {
+  return (
+    <View style={styles.datePickerContainer}>
+      <Text style={styles.datePickerLabel}>{label}</Text>
+      <Text
+        onPress={() => {
+          DateTimePickerAndroid.open({
+            value: value,
+            mode: 'date',
+            onChange: (event, newDate) => {
+              if (event.type === 'set' && newDate) {
+                onChange(newDate);
+              }
+            }
+          });
+        }}
+      >
+        {value.toLocaleDateString()}
+      </Text>
+    </View>
+  )
+}
+
 export default function InputSandbox({ navigation }: Props) {
   const [changedText, setChangedText] = useState("");
   const [submittedText, setSubmittedText] = useState("");
   const [firstSwitch, setFirstSwitch] = useState(false);
   const [secondSwitch, setSecondSwitch] = useState(false);
+  const [date, setDate] = useState(new Date());
 
   return (
     <View style={styles.textInputContainer}>
@@ -63,6 +88,7 @@ export default function InputSandbox({ navigation }: Props) {
       <Text>Submitted Text: {submittedText}</Text>
       <CustomSwitch label="disable Next switch" value={firstSwitch} onValueChange={setFirstSwitch} disabled={secondSwitch} />
       <CustomSwitch label="disable previous switch" value={secondSwitch} onValueChange={setSecondSwitch} disabled={firstSwitch} />
+      <DatePicker label="Select Date" value={date} onChange={setDate} />
     </View>
   );
 }
