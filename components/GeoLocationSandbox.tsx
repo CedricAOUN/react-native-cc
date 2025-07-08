@@ -3,7 +3,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import * as Location from 'expo-location';
 import { useEffect, useState } from "react";
 import { Button, Text, View } from "react-native";
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import styles from "../styles/styles";
 
 type Props = NativeStackScreenProps<RootStackParamList, 'GeoLocationHome'>;
@@ -67,7 +67,14 @@ export default function GeoLocationSandbox({ navigation }: Props) {
 
   return (
     <View style={styles.geoContainer}>
-      <MapView style={styles.map} showsUserLocation followsUserLocation />
+      <MapView style={styles.map} showsUserLocation followsUserLocation>
+        <Marker
+          title="Cloud Campus"
+          description="Cloud Campus: l'ecole des specialistes du developpement web"
+          coordinate={{ latitude: 48.8585802, longitude: 2.3730884 }}
+        />
+      </MapView>
+
       <Text style={{ ...styles.address, ...styles.label }}>Address: {address}</Text>
       <Text style={styles.label}>Latitude: {location?.latitude}</Text>
       <Text style={styles.label}>Longitude: {location?.longitude}</Text>
