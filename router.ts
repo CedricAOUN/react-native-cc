@@ -3,4 +3,5 @@ export type RootStackParamList = {
   Settings: { username: string };
   News: undefined;
   ListHome: undefined;
+  GeoLocationHome: undefined;
 };

@@ -67,4 +67,17 @@ export default StyleSheet.create({
     height: 40,
     width: 200,
   },
+  geoContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'ghostwhite',
+  },
+  label: {
+    textAlign: 'center',
+    margin: 10,
+  },
+  address: {
+    fontWeight: 'bold',
+  },
 });
