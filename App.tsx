@@ -8,6 +8,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Platform } from 'react-native';
 import GeoLocationSandbox from './components/GeoLocationSandbox';
 import Home from './components/Home';
+import InputSandbox from './components/InputSandbox';
 import ListHome from './components/ListSandbox';
 import News from './components/News';
 import Settings from './components/Settings';
@@ -28,6 +29,7 @@ export default function App() {
             <Tab.Screen name="News" component={News} />
             <Tab.Screen name="ListHome" component={ListHome} />
             <Tab.Screen name="GeoLocationHome" component={GeoLocationSandbox} />
+            <Tab.Screen name="InputSandbox" component={InputSandbox} />
           </Tab.Navigator>
         )}
         {Platform.OS === 'android' && (
@@ -37,6 +39,7 @@ export default function App() {
             <Drawer.Screen name="News" component={News} />
             <Drawer.Screen name="ListHome" component={ListHome} />
             <Drawer.Screen name="GeoLocationHome" component={GeoLocationSandbox} />
+            <Drawer.Screen name="InputSandbox" component={InputSandbox} />
           </Drawer.Navigator>
         )}
       </NavigationContainer>

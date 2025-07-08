@@ -4,4 +4,5 @@ export type RootStackParamList = {
   News: undefined;
   ListHome: undefined;
   GeoLocationHome: undefined;
+  InputSandbox: undefined;
 };

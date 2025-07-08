@@ -94,4 +94,17 @@ export default StyleSheet.create({
   boldText: {
     fontWeight: 'bold',
   },
+  textInputContainer: {
+    alignSelf: 'stretch',
+    marginBottom: 20,
+  },
+  textInput: {
+    height: 20,
+    color: 'white',
+    backgroundColor: 'darkslategray',
+    fontSize: 11,
+  },
+  textInputLabel: {
+    marginBottom: 4,
+  },
 });
