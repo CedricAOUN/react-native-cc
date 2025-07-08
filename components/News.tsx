@@ -1,7 +1,10 @@
 import { RootStackParamList } from "@/router";
 import styles from "@/styles/styles";
+import Slider from "@react-native-community/slider";
+
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Pressable, Text, View } from "react-native";
+import { useState } from "react";
+import { Image, Pressable, Text, View } from "react-native";
 import Animated, { SlideInLeft, useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
 type Props = NativeStackScreenProps<RootStackParamList, 'News'>;
 
@@ -34,9 +37,23 @@ export default function News({ navigation }: Props) {
     color.value = withSpring(1);
   }
 
+  const [width, setWidth] = useState(100);
+  const [height, setHeight] = useState(100);
+
   return (
     <View style={styles.container}>
       <Text>News Screen</Text>
+      <Image source={{ uri: 'https://cdn-icons-png.flaticon.com/256/5360/5360938.png' }} style={{ width , height }} />
+      <Slider
+        style={{ width: 200, height: 40 }}
+        minimumValue={20}
+        maximumValue={150}
+        value={width}
+        onValueChange={(value) => {
+          setWidth(value)
+          setHeight(value)
+        }}
+      />
       <Animated.View style={animatedStyles} entering={SlideInLeft}>
         <Pressable 
           onPressIn={onPressIn}
