@@ -107,4 +107,8 @@ export default StyleSheet.create({
   textInputLabel: {
     marginBottom: 4,
   },
+  customSwitch: {
+    alignItems: 'center',
+    margin: 10,
+  },
 });
