@@ -1,3 +1,4 @@
+import { fetchItems } from "@/api/api";
 import { RootStackParamList } from "@/router";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
@@ -19,47 +20,39 @@ const filterAndSort = (text: string, asc: boolean): { key: string; value: string
     )
 };
 
-export function fetchItems(filter: string, asc: boolean): Promise<{ json: () => Promise<{ items: { key: string; value: string }[] }> }> {
-  return new Promise((resolve) => {
-    resolve({
-      json: () =>
-        Promise.resolve({
-          items: filterAndSort(filter, asc)
-        })
-    });
-  });
-}
-
 export default function ListHome({ navigation }: Props) {
   const [asc, setAsc] = useState(true);
   const [filter, setFilter] = useState("");
   const [parsedData, setParsedData] = useState<{ key: string; value: string }[]>([]);
 
-  useEffect(() => {
-    fetchItems(filter, asc).then((response) => {
-      response.json().then((data) => {
-        setParsedData(data.items);
+  // re-format generated items to { key: string; value: string }
+  const formatItems = (items: any[]): { key: string; value: string }[] => {
+    return items.filter((item: any): item is { key: string; value: string } => 
+      item && typeof item.key === 'string' && typeof item.value === 'string'
+    );
+  };
+
+  function retrieveItems() {
+    return fetchItems({ refresh: false })
+      .then(response => response.json())
+      .then(({ items }) => {
+        const validItems = formatItems(items);
+        setParsedData(prevData => [
+          ...prevData,
+          ...validItems
+        ]);
       });
-    });
-  }, [filter, asc]);
+  }
+
+  useEffect(() => {
+    retrieveItems()
+  }, []);
 
   return (
     <View style={styles.listContainer}>
       <List 
         data={parsedData} 
-        onFilter={(text) => {
-          fetchItems(text, asc).then((response) => response.json().then((data) => {
-            setFilter(text);
-            setParsedData(data.items);
-          }));
-        }}
-        onSort={() => {
-          fetchItems(filter, !asc).then((response) => response.json().then((data) => {
-            setAsc(!asc);
-            setParsedData(data.items);
-          }));
-        }}
-        asc={asc} 
+        fetchItems={retrieveItems}
       />
     </View>
   );
