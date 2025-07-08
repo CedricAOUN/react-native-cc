@@ -1,6 +1,6 @@
 import { RootStackParamList } from "@/router";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { View } from "react-native";
 import styles from "../styles/styles";
 import List from "./List";
@@ -19,12 +19,28 @@ const filterAndSort = (text: string, asc: boolean): { key: string; value: string
     )
 };
 
+export function fetchItems(filter: string, asc: boolean): Promise<{ json: () => Promise<{ items: { key: string; value: string }[] }> }> {
+  return new Promise((resolve) => {
+    resolve({
+      json: () =>
+        Promise.resolve({
+          items: filterAndSort(filter, asc)
+        })
+    });
+  });
+}
+
 export default function ListHome({ navigation }: Props) {
   const [asc, setAsc] = useState(true);
   const [filter, setFilter] = useState("");
+  const [parsedData, setParsedData] = useState<{ key: string; value: string }[]>([]);
 
-  const parsedData = useMemo(() => {
-    return filterAndSort(filter, asc);
+  useEffect(() => {
+    fetchItems(filter, asc).then((response) => {
+      response.json().then((data) => {
+        setParsedData(data.items);
+      });
+    });
   }, [filter, asc]);
 
   return (
@@ -32,11 +48,17 @@ export default function ListHome({ navigation }: Props) {
       <List 
         data={parsedData} 
         onFilter={(text) => {
-          setFilter(text);
-        }} 
+          fetchItems(text, asc).then((response) => response.json().then((data) => {
+            setFilter(text);
+            setParsedData(data.items);
+          }));
+        }}
         onSort={() => {
-          setAsc(!asc);
-        }} 
+          fetchItems(filter, !asc).then((response) => response.json().then((data) => {
+            setAsc(!asc);
+            setParsedData(data.items);
+          }));
+        }}
         asc={asc} 
       />
     </View>
