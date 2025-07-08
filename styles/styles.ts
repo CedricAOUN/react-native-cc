@@ -80,4 +80,9 @@ export default StyleSheet.create({
   address: {
     fontWeight: 'bold',
   },
+  map: {
+    alignSelf: 'stretch',
+    height: 300,
+    margin: 10,
+  },
 });
