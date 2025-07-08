@@ -2,7 +2,7 @@ import { RootStackParamList } from "@/router";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import * as Location from 'expo-location';
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { Button, Text, View } from "react-native";
 import styles from "../styles/styles";
 
 type Props = NativeStackScreenProps<RootStackParamList, 'GeoLocationHome'>;
@@ -13,6 +13,7 @@ const URL = `https://maps.googleapis.com/maps/api/geocode/json?key=${API_KEY}&la
 export default function GeoLocationSandbox({ navigation }: Props) {
   const [address, setAddress] = useState<string>("loading...");
   const [location, setLocation] = useState<{ latitude: number; longitude: number } | undefined>();
+  const [reload, setReload] = useState(1);
 
   useEffect(() => {
     function setPosition(coords: { latitude: number; longitude: number }) {
@@ -21,14 +22,14 @@ export default function GeoLocationSandbox({ navigation }: Props) {
         longitude: coords.longitude
       });
     }
-
-    fetch(URL + `${location?.latitude},${location?.longitude}`)
+    const FETCH_URL = URL + `${location?.latitude},${location?.longitude}`;
+    fetch(FETCH_URL)
       .then(response => response.json())
-      .then(results => {
-        if (results && results.length > 0) {
-          setAddress(results[0].formatted_address);
+      .then(data => {
+        if (data.results && data.results.length > 0) {
+          setAddress(data.results[0].formatted_address);
         } else {
-          setAddress("No address found");
+          setAddress("No address found" + (data.error_message ? `: ${data.error_message}` : ""));
         }
       })
       .catch(error => {
@@ -61,13 +62,14 @@ export default function GeoLocationSandbox({ navigation }: Props) {
         watcher.remove();
       }
     };
-  }, [location]);
+  }, [reload]);
 
   return (
     <View style={styles.geoContainer}>
       <Text style={{ ...styles.address, ...styles.label }}>Address: {address}</Text>
       <Text style={styles.label}>Latitude: {location?.latitude}</Text>
       <Text style={styles.label}>Longitude: {location?.longitude}</Text>
+      <Button onPress={() => setReload(prev => prev + 1) } title="Reload" />
     </View>
   );
 }
