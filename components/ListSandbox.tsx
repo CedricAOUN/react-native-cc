@@ -21,9 +21,8 @@ const filterAndSort = (text: string, asc: boolean): { key: string; value: string
 };
 
 export default function ListHome({ navigation }: Props) {
-  const [asc, setAsc] = useState(true);
-  const [filter, setFilter] = useState("");
   const [parsedData, setParsedData] = useState<{ key: string; value: string }[]>([]);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // re-format generated items to { key: string; value: string }
   const formatItems = (items: any[]): { key: string; value: string }[] => {
@@ -43,6 +42,19 @@ export default function ListHome({ navigation }: Props) {
         ]);
       });
   }
+  
+  function refreshItems() {
+    setIsRefreshing(true);
+    return fetchItems({ refresh: true })
+      .then(response => response.json())
+      .then(({ items }) => {
+        const validItems = formatItems(items);
+        setParsedData(validItems);
+      })
+      .finally(() => {
+        setIsRefreshing(false);
+      });
+  }
 
   useEffect(() => {
     retrieveItems()
@@ -53,6 +65,8 @@ export default function ListHome({ navigation }: Props) {
       <List 
         data={parsedData} 
         fetchItems={retrieveItems}
+        refreshItems={refreshItems}
+        isRefreshing={isRefreshing}
       />
     </View>
   );

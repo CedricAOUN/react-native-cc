@@ -1,18 +1,21 @@
 import styles from "@/styles/styles";
-import { Text } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
+import { FlatList, Text } from "react-native";
 
 type ListProps = {
   data: {key: string; value: string}[];
-  fetchItems: () => void;
+  fetchItems: () => Promise<void>;
+  refreshItems: () => Promise<void>;
+  isRefreshing: boolean;
 };
 
-export default function List({ data, fetchItems }: ListProps) {
+export default function List({ data, fetchItems, refreshItems, isRefreshing }: ListProps) {
   return (
       <FlatList
         data={data}
         renderItem={({ item }) => <Text style={styles.listItem}>{item.value}</Text>}
         onEndReached={fetchItems}
+        onRefresh={refreshItems}
+        refreshing={isRefreshing}
       />
   );
 }
