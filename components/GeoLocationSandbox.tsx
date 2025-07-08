@@ -1,9 +1,10 @@
 import { RootStackParamList } from "@/router";
+import { ipaRegion, stoutRegion } from "@/utils/mapUtils";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import * as Location from 'expo-location';
 import { useEffect, useState } from "react";
-import { Button, Text, View } from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import { Button, ScrollView, Text, View } from "react-native";
+import MapView, { Marker, Polygon } from "react-native-maps";
 import styles from "../styles/styles";
 
 type Props = NativeStackScreenProps<RootStackParamList, 'GeoLocationHome'>;
@@ -66,7 +67,8 @@ export default function GeoLocationSandbox({ navigation }: Props) {
   }, [reload]);
 
   return (
-    <View style={styles.geoContainer}>
+    <ScrollView style={{ marginVertical: 40 }}>
+      <PlottingOverlays />
       <MapView style={styles.map} showsUserLocation followsUserLocation>
         <Marker
           title="Cloud Campus"
@@ -79,6 +81,65 @@ export default function GeoLocationSandbox({ navigation }: Props) {
       <Text style={styles.label}>Latitude: {location?.latitude}</Text>
       <Text style={styles.label}>Longitude: {location?.longitude}</Text>
       <Button onPress={() => setReload(prev => prev + 1) } title="Reload" />
-    </View>
+    </ScrollView>
   );
+}
+
+function PlottingOverlays() {
+  const [ipaStyles, setIpaStyles] = useState(styles.ipaStyles);
+  const [stoutStyles, setStoutStyles] = useState(styles.stoutStyles);
+  const [currentOverlay, setCurrentOverlay] = useState<'ipa' | 'stout'>('ipa');
+
+  function onClickIpa() {
+    setCurrentOverlay('ipa');
+  }
+  function onClickStout() {
+    setCurrentOverlay('stout');
+  }
+  return (
+    <View style={{ width: '100%'}}>
+      <View>
+        <Text style={[ipaStyles, currentOverlay === 'ipa' && styles.boldText]} onPress={onClickIpa}>IPA</Text>
+        <Text style={[stoutStyles, currentOverlay === 'stout' && styles.boldText]} onPress={onClickStout}>Stout</Text>
+      </View>
+      <MapView
+        style={styles.map}  
+        showsPointsOfInterest={false}
+        initialRegion={{
+          latitude: 48.8582341,
+          longitude: 2.3735267,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
+        }}
+        initialCamera={{
+          center: {
+            latitude: 48.8582341,
+            longitude: 2.3735267,
+          },
+          pitch: 45,
+          heading: 90,
+          altitude: 1000,
+          zoom: 15,
+        }}
+      >
+        {/* Overlay for IPA */}
+        {currentOverlay === 'ipa' && (
+          <Polygon
+            coordinates={ipaRegion.coordinates}
+            strokeColor={ipaRegion.strokeColor}
+            strokeWidth={ipaRegion.strokeWidth}
+          />
+        )}
+
+        {/* Overlay for Stout */}
+        {currentOverlay === 'stout' && (
+          <Polygon
+            coordinates={stoutRegion.coordinates}
+            strokeColor={stoutRegion.strokeColor}
+            strokeWidth={stoutRegion.strokeWidth}
+          />
+        )}
+      </MapView>
+    </View>
+  )
 }

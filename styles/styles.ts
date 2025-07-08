@@ -85,4 +85,13 @@ export default StyleSheet.create({
     height: 300,
     margin: 10,
   },
+  ipaStyles: {
+    color: 'coral',
+  },
+  stoutStyles: {
+    color: 'saddlebrown',
+  },
+  boldText: {
+    fontWeight: 'bold',
+  },
 });
